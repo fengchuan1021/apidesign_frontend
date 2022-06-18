@@ -1,57 +1,24 @@
 <template>
-<div>
-  <div v-show="dialogVisible">
-    <div style="position:fixed;z-index:9999;height:100%;background-color:rgba(0, 0, 0, .5);top:0;bottom:0;left:0;right: 0;">
-      <div style="position:fixed;z-index:9999;height:500px;background-color:white;top:0;bottom:0;left:0;right: 0;margin:auto;width:800px;border-radius: 5px;padding:5px;">
-        <div id="editor" style="width: 800px;height:490px;">
-          <div id="container" style="width:400px;height:490px"></div>
-        </div>
-        <div id="chosebox" style="width: 400px"></div>
-        <div>
-          <el-button @click="savejson">确定</el-button><el-button @click="dialogVisible=false">取消</el-button>
-        </div>
-      </div>
-    </div>
+<div style="display:flex;">
+
+
+  <div id="left" style="width:20%">
+    <LeftTree></LeftTree>
   </div>
 
-  <div id="left">
-
+  <div id="right" style="width:50%">
   </div>
 
-  <div id="right">
-    <el-input v-model="module.name"></el-input>
-    <el-input v-model="module.url"></el-input>
-    <div>
-      <div v-for="(item,key) in module.actions" :key="key">
-        <el-input v-model="item.name" width="100px"></el-input>
-        <el-input v-model="item.url"></el-input>
-        <el-input v-model="item.mark"></el-input>
 
-        <div>
-          <div>传入参数：</div>
-          <div>
-          {{item.input}}
-          </div>
-          <div><el-button @click="editjson(item,'input')">编辑</el-button></div>
-        </div>
-
-        <div>
-          <div>传出参数：</div>
-          <div>{{item.output}}</div>
-          <div><el-button @click="editjson(item,'output')">编辑</el-button></div>
-        </div>
-
-      </div>
-    </div>
-
-
-    <el-button @click="module.actions.push({url:'','name':'','mark':''})">添加函数</el-button>
+  <div id="left" style="width:30%">
   </div>
+
 </div>
 </template>
 
 <script setup>
 import * as monaco from 'monaco-editor'
+import LeftTree from './LeftTree'
 import {onMounted, reactive, ref} from "vue";
 const dialogVisible=ref(false);
 //let json=reactive({})
@@ -156,8 +123,9 @@ onMounted(()=>{
   });
 })
 
-
+// eslint-disable-next-line no-unused-vars
 const module=reactive({'name':'demon','baseurl':'/api/demon','description':'',actions:[{url:'/setfoo','name':'setfoo','mark':'设置foo的值','input':'','output':''}]})
+// eslint-disable-next-line no-unused-vars
 const editjson=(item,direct)=>{
   dialogVisible.value=true
   currentitem=item
@@ -166,6 +134,7 @@ const editjson=(item,direct)=>{
   // Object.assign(json,item[direct])
   editor.getModel().setValue(item[direct]);
 }
+// eslint-disable-next-line no-unused-vars
 const savejson=()=>{
   let value=editor.getModel().getValue()
   console.log(value)
